@@ -62,7 +62,7 @@ html {
     justify-content: center;
 }
 
-/* --- CUSTOM ALERT MODAL --- */
+/* --- CUSTOM ALERT (Keep existing) --- */
 .custom-alert-overlay {
     position: fixed;
     top: 0;
@@ -92,7 +92,7 @@ html {
     width: 400px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform: scale(0.8);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s;
 }
 
 .custom-alert-overlay.active .custom-alert-box {
@@ -104,11 +104,6 @@ html {
     font-size: 2rem;
     color: var(--primary-color);
     margin-bottom: 10px;
-}
-
-.custom-alert-box p {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
 }
 
 .custom-alert-btn {
@@ -195,12 +190,12 @@ html {
 
 .sticker {
     position: absolute;
-    top: 50px;
+    top: 90px !important;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    background-image: url('sticker_1770195652350.png');
+    width: 100px;
+    height: 100px;
+    background-image: url('classic-heart-wax-stamp-free-png.webp');
     background-size: contain;
     z-index: 25;
     transition: opacity 0.3s;
@@ -249,6 +244,32 @@ html {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
+}
+
+.env-instruction {
+    position: absolute;
+    bottom: -60px;
+    width: 100%;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
 }
 
 /* --- 2. Timer --- */
@@ -323,76 +344,49 @@ html {
     accent-color: var(--primary-color);
 }
 
-/* --- 4. Cube --- */
+/* --- 4. PHOTO SPHERE --- */
 .scene {
     width: 300px;
     height: 300px;
     perspective: 1000px;
+    touch-action: none;
+    position: relative;
 }
 
-.cube {
+.sphere-wrapper {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     transform-style: preserve-3d;
-    transform: translateZ(-150px);
-    animation: rotateCube 15s infinite linear;
+    animation: rotateSphere 30s infinite linear;
 }
 
-.cube-face {
+.sphere-face {
     position: absolute;
-    width: 300px;
-    height: 300px;
-    border: 4px solid #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 150px;
+    height: 150px;
+    left: 75px;
+    top: 75px;
+    /* Center in 300x300 scene */
     background-size: cover;
     background-position: center;
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    backface-visibility: hidden;
+    /* Or visible? Let's keep distinct */
+    backface-visibility: visible;
 }
 
-.face-front {
-    transform: rotateY(0deg) translateZ(150px);
-    background-image: url('photo1_1770195667147.png');
-}
-
-.face-right {
-    transform: rotateY(90deg) translateZ(150px);
-    background-image: url('photo2_1770195682768.png');
-}
-
-.face-back {
-    transform: rotateY(180deg) translateZ(150px);
-    background-image: url('photo3_1770195698920.png');
-}
-
-.face-left {
-    transform: rotateY(-90deg) translateZ(150px);
-    background: var(--secondary-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
-
-.face-top {
-    transform: rotateX(90deg) translateZ(150px);
-    background: var(--primary-color);
-}
-
-.face-bottom {
-    transform: rotateX(-90deg) translateZ(150px);
-    background: var(--primary-color);
-}
-
-@keyframes rotateCube {
+/* Animation needs to be applied to wrapper rotation */
+@keyframes rotateSphere {
     0% {
-        transform: translateZ(-150px) rotateY(0deg) rotateX(10deg);
+        transform: rotateY(0deg) rotateX(0deg);
     }
 
     100% {
-        transform: translateZ(-150px) rotateY(360deg) rotateX(10deg);
+        transform: rotateY(360deg) rotateX(360deg);
     }
 }
 
@@ -474,11 +468,6 @@ html {
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s;
-}
-
-.quiz-container button:hover {
-    background: var(--primary-color);
-    color: white;
 }
 
 /* --- 7. Bottle --- */
@@ -582,10 +571,38 @@ html {
     transform: scale(0.95);
 }
 
-/* --- 10. Reasons --- */
+/* --- 10. OUR PROMISES (Replaced Journey) --- */
+.promises-section {
+    width: 85%;
+    max-width: 600px;
+}
+
+.promises-list {
+    list-style: none;
+    text-align: center;
+}
+
+.promises-list li {
+    background: white;
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    transition: transform 0.3s;
+}
+
+.promises-list li:hover {
+    transform: scale(1.02);
+}
+
+/* --- 11. Reasons (4 Cards) --- */
 .reasons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    /* Force 2 cols to show 4 total nicely */
     gap: 15px;
     width: 90%;
     max-width: 800px;
@@ -695,7 +712,6 @@ html {
     }
 }
 
-/* Footer Button */
 .made-by-btn {
     margin-top: 50px;
     padding: 10px 20px;
@@ -740,44 +756,18 @@ html {
     }
 
     .scene {
-        width: 220px;
-        height: 220px;
+        width: 250px;
+        height: 250px;
     }
 
-    .cube-face {
-        width: 220px;
-        height: 220px;
-        border: 2px solid white;
+    .sphere-face {
+        width: 100px;
+        height: 100px;
+        left: 75px;
+        top: 75px;
     }
 
-    .cube {
-        transform: translateZ(-110px);
-    }
-
-    .face-front {
-        transform: rotateY(0deg) translateZ(110px);
-    }
-
-    .face-right {
-        transform: rotateY(90deg) translateZ(110px);
-    }
-
-    .face-back {
-        transform: rotateY(180deg) translateZ(110px);
-    }
-
-    .face-left {
-        transform: rotateY(-90deg) translateZ(110px);
-    }
-
-    .face-top {
-        transform: rotateX(90deg) translateZ(110px);
-    }
-
-    .face-bottom {
-        transform: rotateX(-90deg) translateZ(110px);
-    }
-
+    /* Mobile sizing */
     .reasons-grid {
         grid-template-columns: 1fr 1fr;
     }

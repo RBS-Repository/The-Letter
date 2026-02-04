@@ -10,7 +10,6 @@
 
 <body>
 
-    <!-- CUSTOM ALERT MODAL -->
     <div class="custom-alert-overlay">
         <div class="custom-alert-box">
             <h3>Alert Title</h3>
@@ -19,11 +18,10 @@
         </div>
     </div>
 
-    <!-- GRAND FINALE OVERLAY -->
     <div class="finale-overlay">
         <div class="big-heart">❤️</div>
         <div class="finale-text">I Love You <br> Forever & Always</div>
-        <div class="made-by-btn">Made with love by Jeko</div>
+        <a href="#" class="made-by-btn">Made with love by Jeko</a>
     </div>
 
     <div class="floating-hearts">
@@ -53,6 +51,7 @@
                 <div class="envelope-front"></div>
                 <div class="envelope-lid"></div>
                 <label for="open-envelope" class="sticker"></label>
+                <div class="env-instruction">Tap the Heart to Open</div>
             </div>
             <div class="letter-content">
                 <h1 class="fade-in-text script-font" style="font-size:3rem; color:var(--primary-color);">My Dearest...
@@ -102,24 +101,18 @@
             </div>
         </section>
 
-        <!-- SLIDE 4: MEMORIES CUBE -->
+        <!-- SLIDE 4: 8-FACE SPHERE -->
         <section class="slide"
             style="background: radial-gradient(circle, rgba(255,235,238,1) 0%, rgba(248,187,208,1) 100%);">
             <div style="text-align: center; margin-bottom: 50px; position: absolute; top: 10%;">
                 <h2 class="script-font" style="font-size: 3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                     Our Memories</h2>
-                <p style="color: white; font-style: italic;">(Touch & Drag to rotate)</p>
+                <p style="color: white; font-style: italic;">(Touch & Drag - Spinnable)</p>
             </div>
             <div class="scene">
-                <div class="cube">
-                    <div class="cube-face face-front"></div>
-                    <div class="cube-face face-back"></div>
-                    <div class="cube-face face-right"></div>
-                    <div class="cube-face face-left">
-                        <h3>You are magic</h3>
-                    </div>
-                    <div class="cube-face face-top"></div>
-                    <div class="cube-face face-bottom"></div>
+                <!-- Wrapper for JS injected faces -->
+                <div class="sphere-wrapper">
+                    <!-- JS will fill this with faces -->
                 </div>
             </div>
         </section>
@@ -143,13 +136,6 @@
                         </div>
                         <div class="coupon-right">TICKET</div>
                     </div>
-                    <div class="coupon" onclick="customAlert('Redeemed!', 'Dinner Date! 🍕')">
-                        <div class="coupon-left">
-                            <h3>Dinner Date</h3>
-                            <p>My treat.</p>
-                        </div>
-                        <div class="coupon-right">ADMIT1</div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -168,7 +154,6 @@
                     <p style="margin:20px 0;">2. What is my favorite thing about you?</p>
                     <button onclick="checkAnswer(this, true)">Everything</button>
                     <button onclick="checkAnswer(this, true)">Your Smile</button>
-                    <button onclick="checkAnswer(this, true)">Your Kindness</button>
                 </div>
             </div>
         </section>
@@ -204,7 +189,21 @@
             </div>
         </section>
 
-        <!-- SLIDE 10: REASONS -->
+        <!-- SLIDE 10: OUR PROMISES (NEW) -->
+        <section class="slide" style="background: #E0F2F1;">
+            <h2 class="script-font" style="font-size:3rem; color: #00695C; position:absolute; top:20px;">Our Promises
+            </h2>
+            <div class="promises-section">
+                <ul class="promises-list">
+                    <li>I promise to always listen.</li>
+                    <li>I promise to be your biggest supporter.</li>
+                    <li>I promise to love you on the good days and the bad.</li>
+                    <li>I promise to choose you, every single day.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SLIDE 11: REASONS (4 Cards) -->
         <section class="slide" style="flex-direction: column; background: rgba(255,255,255,0.5);">
             <h2 class="script-font"
                 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; text-align:center;">Reasons I
@@ -237,12 +236,9 @@
             </div>
         </section>
 
-        <!-- SLIDE 11: TRIGGER & SPACER -->
+        <!-- SLIDE 12: TRIGGER ONLY -->
         <section class="slide" style="background: transparent;">
-            <div id="finale-trigger" style="text-align:center; opacity:0.5;">
-                <p>❤️</p>
-                <!-- This empty slide ensures we don't trigger finale while reading reasons -->
-            </div>
+            <div id="finale-trigger" style="text-align:center; opacity:0.5;">❤️</div>
         </section>
 
     </div>
