@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- CUSTOM ALERT MODAL -->
+    <div class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <h3>Alert Title</h3>
+            <p>Alert Message</p>
+            <button class="custom-alert-btn" onclick="closeAlert()">Okay ❤️</button>
+        </div>
+    </div>
+
+    <!-- GRAND FINALE OVERLAY -->
+    <div class="finale-overlay">
+        <div class="big-heart">❤️</div>
+        <div class="finale-text">I Love You <br> Forever & Always</div>
+        <div class="made-by-btn">Made with love by Jeko</div>
+    </div>
+
+    <div class="floating-hearts">
+        <div class="heart" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+        <div class="heart"
+            style="left: 30%; animation-duration: 15s; animation-delay: 2s; background: rgba(255, 100, 100, 0.4);">
+        </div>
+        <div class="heart" style="left: 50%; animation-duration: 10s; animation-delay: 5s;"></div>
+        <div class="heart"
+            style="left: 70%; animation-duration: 18s; animation-delay: 1s; background: rgba(219, 112, 147, 0.5);">
+        </div>
+        <div class="heart" style="left: 90%; animation-duration: 13s; animation-delay: 3s;"></div>
+    </div>
+
+    <audio id="bg-music" controls loop>
+        <source src="Le John - Naiilang (Official Lyric Video).mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container">
+
+        <!-- SLIDE 1: INTRO -->
+        <section class="slide" id="envelope-slide">
+            <input type="checkbox" id="open-envelope">
+            <div class="envelope-wrapper">
+                <div class="envelope-back"></div>
+                <div class="letter-preview"></div>
+                <div class="envelope-front"></div>
+                <div class="envelope-lid"></div>
+                <label for="open-envelope" class="sticker"></label>
+            </div>
+            <div class="letter-content">
+                <h1 class="fade-in-text script-font" style="font-size:3rem; color:var(--primary-color);">My Dearest...
+                </h1>
+                <div class="fade-in-text">
+                    <p>I wanted to create something special, just for you.</p>
+                    <p>Scroll down to see our world...</p>
+                </div>
+            </div>
+            <div class="scroll-hint">↓</div>
+        </section>
+
+        <!-- SLIDE 2: NOTE & TIMER -->
+        <section class="slide" style="background: rgba(255,255,255,0.4);">
+            <div class="flex-column slide-content" style="width:100%;">
+                <div class="paper-note">
+                    <h2 class="script-font" style="font-size:2.5rem; color:var(--primary-color);">A Note from My Heart
+                    </h2>
+                    <br>
+                    <p>You are the sunshine on my rainy days, the calm in my storm.</p>
+                    <br>
+                    <p class="script-font" style="font-size: 1.5rem; text-align: right;">- Forever Yours</p>
+                </div>
+                <div class="timer-container">
+                    <h3 class="script-font" style="margin-bottom:10px;">Falling in love for...</h3>
+                    <div id="timer">
+                        <div><span id="days">0</span><br><span class="label">Days</span></div>
+                        <div><span id="hours">0</span><br><span class="label">Hours</span></div>
+                        <div><span id="minutes">0</span><br><span class="label">Mins</span></div>
+                        <div><span id="seconds">0</span><br><span class="label">Secs</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: FUTURE DREAMS -->
+        <section class="slide" style="background: rgba(255,240,245,0.8);">
+            <div class="notepad">
+                <h2>Our Bucket List</h2>
+                <ul>
+                    <li><input type="checkbox"> Stargazing connection</li>
+                    <li><input type="checkbox"> Travel to Japan</li>
+                    <li><input type="checkbox"> Adopt a cat</li>
+                    <li><input type="checkbox"> Learn to cook together</li>
+                    <li><input type="checkbox" checked> Fall in love every day</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: MEMORIES CUBE -->
+        <section class="slide"
+            style="background: radial-gradient(circle, rgba(255,235,238,1) 0%, rgba(248,187,208,1) 100%);">
+            <div style="text-align: center; margin-bottom: 50px; position: absolute; top: 10%;">
+                <h2 class="script-font" style="font-size: 3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    Our Memories</h2>
+                <p style="color: white; font-style: italic;">(Touch & Drag to rotate)</p>
+            </div>
+            <div class="scene">
+                <div class="cube">
+                    <div class="cube-face face-front"></div>
+                    <div class="cube-face face-back"></div>
+                    <div class="cube-face face-right"></div>
+                    <div class="cube-face face-left">
+                        <h3>You are magic</h3>
+                    </div>
+                    <div class="cube-face face-top"></div>
+                    <div class="cube-face face-bottom"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: LOVE COUPONS -->
+        <section class="slide" style="background: #FFF3E0;">
+            <div style="text-align:center; width:90%;">
+                <h2 class="script-font" style="font-size:3rem; color:#E65100; margin-bottom:30px;">Love Coupons</h2>
+                <div class="coupons-container">
+                    <div class="coupon" onclick="customAlert('Redeemed!', 'One Tight Hug! 🤗')">
+                        <div class="coupon-left">
+                            <h3>Free Hug</h3>
+                            <p>Valid anytime.</p>
+                        </div>
+                        <div class="coupon-right">REDEEM</div>
+                    </div>
+                    <div class="coupon" onclick="customAlert('Redeemed!', 'Movie Night! 🎬')">
+                        <div class="coupon-left">
+                            <h3>Movie Night</h3>
+                            <p>Your choice.</p>
+                        </div>
+                        <div class="coupon-right">TICKET</div>
+                    </div>
+                    <div class="coupon" onclick="customAlert('Redeemed!', 'Dinner Date! 🍕')">
+                        <div class="coupon-left">
+                            <h3>Dinner Date</h3>
+                            <p>My treat.</p>
+                        </div>
+                        <div class="coupon-right">ADMIT1</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: QUIZ -->
+        <section class="slide" style="background: rgba(255,255,255,0.7);">
+            <div class="quiz-container">
+                <h2>How well do you know us?</h2>
+                <div class="question" id="q1">
+                    <p style="margin:20px 0;">1. Where did we first meet?</p>
+                    <button onclick="checkAnswer(this, false)">The Library</button>
+                    <button onclick="checkAnswer(this, true)">Coffee Shop</button>
+                    <button onclick="checkAnswer(this, false)">A Party</button>
+                </div>
+                <div class="question" id="q2" style="display:none;">
+                    <p style="margin:20px 0;">2. What is my favorite thing about you?</p>
+                    <button onclick="checkAnswer(this, true)">Everything</button>
+                    <button onclick="checkAnswer(this, true)">Your Smile</button>
+                    <button onclick="checkAnswer(this, true)">Your Kindness</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: BOTTLE -->
+        <section class="slide" style="background: linear-gradient(to bottom, #87CEEB, #E0F7FA);">
+            <div class="bottle-section">
+                <h2 class="script-font" style="font-size:3rem; color: #0277BD;">Message in a Bottle</h2>
+                <div class="bottle" onclick="openBottle()" style="margin: 30px;">🍼</div>
+                <div id="bottle-message" class="hidden-message">Click for a message!</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8: KEY GAME -->
+        <section class="slide" style="background: #F8BBD0;">
+            <div style="text-align:center;">
+                <h2 class="script-font" style="font-size:3rem; color: #880E4F; margin-bottom:20px;">Unlock My Heart</h2>
+                <p style="margin-bottom:20px;">Find the hidden key...</p>
+                <div class="key-game">
+                    <div class="locked-heart">🔒</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9: AFFIRMATIONS -->
+        <section class="slide" style="background: #E1BEE7;">
+            <div style="text-align:center;">
+                <h2 class="script-font" style="font-size:3rem; color: #4A148C; margin-bottom:30px;">Daily Reminder</h2>
+                <div class="affirmation-card" onclick="nextAffirmation()">
+                    <span id="aff-text">You are incredible.</span>
+                </div>
+                <p style="margin-top:20px; font-size:0.8rem;">(Tap for more)</p>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: REASONS -->
+        <section class="slide" style="flex-direction: column; background: rgba(255,255,255,0.5);">
+            <h2 class="script-font"
+                style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; text-align:center;">Reasons I
+                Love You</h2>
+            <div class="reasons-grid">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">#1</div>
+                        <div class="card-back">Your kindness.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">#2</div>
+                        <div class="card-back">Your smile.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">#3</div>
+                        <div class="card-back">Your laugh.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">#4</div>
+                        <div class="card-back">Just You.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 11: TRIGGER & SPACER -->
+        <section class="slide" style="background: transparent;">
+            <div id="finale-trigger" style="text-align:center; opacity:0.5;">
+                <p>❤️</p>
+                <!-- This empty slide ensures we don't trigger finale while reading reasons -->
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
