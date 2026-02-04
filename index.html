@@ -35,7 +35,7 @@
     <div class="finale-overlay">
         <div class="big-heart">❤️</div>
         <div class="finale-text">I Love You <br> to the moon and back always!</div>
-        <a href="#" class="made-by-btn">Made with love by Jeko</a>
+        <a href="#" class="made-by-btn">Made with love by Jek <a class="pogi">pogi</a></a>
     </div>
 
     <div class="floating-hearts">
@@ -51,7 +51,7 @@
     </div>
 
     <audio id="bg-music" loop>
-        <source src="Le John - Naiilang (Official Lyric Video).mp3" type="audio/mp3">
+        <source src="Naiilang (Piano instrumental).mp3" type="audio/mp3">
     </audio>
 
     <div class="container">
@@ -101,7 +101,14 @@
             </div>
         </section>
 
-        <!-- SLIDE 3: FUTURE DREAMS -->
+        <!-- SLIDE 3: TYPEWRITER POETRY (NEW) -->
+        <section class="slide" style="background: #e3f2fd;">
+            <div class="typewriter-section">
+                <div class="typewriter-text"><span class="cursor">|</span></div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: FUTURE DREAMS -->
         <section class="slide" style="background: rgba(255,240,245,0.8);">
             <div class="notepad">
                 <h2>Our Bucket List</h2>
@@ -125,7 +132,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 4: SCATTERED HEARTBEAT GALLERY (Draggable) -->
+        <!-- SLIDE 5: SCATTERED HEARTBEAT GALLERY (Draggable) -->
         <section class="slide"
             style="background: radial-gradient(circle, rgba(255,235,238,1) 0%, rgba(248,187,208,1) 100%);">
             <div style="text-align: center; margin-bottom: 20px; position: absolute; top: 5%; width: 100%; z-index:10;">
@@ -139,7 +146,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 5: LOVE COUPONS (EXPANDED) -->
+        <!-- SLIDE 6: LOVE COUPONS (EXPANDED) -->
         <section class="slide" style="background: #FFF3E0; flex-direction:column;">
             <h2 class="script-font" style="font-size:3rem; color:#E65100; margin-bottom:20px;">Love Coupons</h2>
             <div class="coupons-container">
@@ -174,7 +181,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 6: "OPEN WHEN" ENVELOPES -->
+        <!-- SLIDE 7: "OPEN WHEN" ENVELOPES -->
         <section class="slide" style="background: #F3E5F5; flex-direction: column;">
             <h2 class="script-font" style="font-size:3rem; color: #7B1FA2; margin-bottom:20px;">Open When...</h2>
             <div class="open-when-grid">
@@ -197,7 +204,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 7: VINYL PLAYER -->
+        <!-- SLIDE 8: VINYL PLAYER -->
         <section class="slide" style="background: rgba(255,255,255,0.7);">
             <div class="vinyl-container">
                 <h2
@@ -215,7 +222,24 @@
             </div>
         </section>
 
-        <!-- SLIDE 8: BOTTLE -->
+        <!-- SLIDE 9: BOUQUET (NEW) -->
+        <section class="slide" style="background: #e8f5e9;">
+            <div class="bouquet-section">
+                <h2 class="script-font" style="font-size: 2.5rem; color: #2e7d32; margin-bottom: 20px;">Build a Bouquet
+                </h2>
+                <div class="garden-grid">
+                    <button class="flower-btn" onclick="addToBouquet('🌹')">🌹</button>
+                    <button class="flower-btn" onclick="addToBouquet('🌻')">🌻</button>
+                    <button class="flower-btn" onclick="addToBouquet('🌷')">🌷</button>
+                    <button class="flower-btn" onclick="addToBouquet('🌼')">🌼</button>
+                    <button class="flower-btn" onclick="addToBouquet('🌸')">🌸</button>
+                </div>
+                <div class="cloud-bouquet"></div>
+                <button class="reset-bouquet" onclick="resetBouquet()">Clear Bouquet ❌</button>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: BOTTLE -->
         <section class="slide" style="background: linear-gradient(to bottom, #87CEEB, #E0F7FA);">
             <div class="bottle-section">
                 <h2 class="script-font" style="font-size:3rem; color: #0277BD;">Message in a Bottle</h2>
@@ -224,7 +248,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 9: KEY GAME -->
+        <!-- SLIDE 11: KEY GAME -->
         <section class="slide" style="background: #F8BBD0;">
             <div style="text-align:center;">
                 <h2 class="script-font" style="font-size:3rem; color: #880E4F; margin-bottom:20px;">Unlock My Heart</h2>
@@ -235,7 +259,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 10: AFFIRMATIONS -->
+        <!-- SLIDE 12: AFFIRMATIONS -->
         <section class="slide" style="background: #E1BEE7;">
             <div style="text-align:center;">
                 <h2 class="script-font" style="font-size:3rem; color: #4A148C; margin-bottom:30px;">Daily Reminder</h2>
@@ -246,7 +270,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 11: OUR PROMISES -->
+        <!-- SLIDE 13: OUR PROMISES -->
         <section class="slide" style="background: #E0F2F1;">
             <h2 class="script-font" style="font-size:3rem; color: #00695C; position:absolute; top:20px;">Our Promises
             </h2>
@@ -260,7 +284,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 12: REASONS (4 Cards) -->
+        <!-- SLIDE 14: REASONS (4 Cards) -->
         <section class="slide" style="flex-direction: column; background: rgba(255,255,255,0.5);">
             <h2 class="script-font"
                 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; text-align:center;">Reasons I
@@ -293,7 +317,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 13: TRIGGER ONLY -->
+        <!-- SLIDE 15: TRIGGER ONLY -->
         <section class="slide" style="background: transparent;">
             <div id="finale-trigger" style="text-align:center; opacity:0.5;">❤️</div>
         </section>

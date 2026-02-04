@@ -22,7 +22,6 @@ setTimeout(() => {
 
 
 /* --- AUDIO LOGIC --- */
-// Using a synthesized beep for reliability without external assets
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playClickSound() {
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -102,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observeFinale();
     setupKeyGame();
     createScatteredGallery();
+    observeTypewriter();
 
     document.querySelector('.custom-alert-overlay').addEventListener('click', (e) => {
         if (e.target === document.querySelector('.custom-alert-overlay')) closeAlert();
@@ -139,6 +139,47 @@ function updateVinyl(isPlaying) {
     }
 }
 
+/* --- Typewriter Logic --- */
+const poemText = `My dearest,\n\nIn a world of constant change, you are my steady ground.\nEvery moment with you feels like a beautiful dream I never want to wake up from.\n\nI love you, now and forever.`;
+let typeIdx = 0;
+let isTyping = false;
+
+function observeTypewriter() {
+    const section = document.querySelector('.typewriter-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !isTyping) {
+                isTyping = true;
+                typeWriter();
+            }
+        });
+    }, { threshold: 0.5 });
+    if (section) observer.observe(section);
+}
+
+function typeWriter() {
+    if (typeIdx < poemText.length) {
+        const textEl = document.querySelector('.typewriter-text');
+        textEl.textContent += poemText.charAt(typeIdx);
+        typeIdx++;
+        setTimeout(typeWriter, 50); // Typing speed
+    }
+}
+
+/* --- Build a Bouquet Logic --- */
+window.addToBouquet = function (flower) {
+    const container = document.querySelector('.cloud-bouquet');
+    const el = document.createElement('div');
+    el.classList.add('bouquet-item');
+    el.textContent = flower;
+    el.style.transform = `rotate(${Math.random() * 20 - 10}deg)`; // Random tilt
+    container.appendChild(el);
+    playClickSound();
+}
+window.resetBouquet = function () {
+    document.querySelector('.cloud-bouquet').innerHTML = '';
+}
+
 /* --- Finale Observer --- */
 function observeFinale() {
     const trigger = document.getElementById('finale-trigger');
@@ -158,14 +199,6 @@ function createScatteredGallery() {
     container.innerHTML = '';
 
     const photos = [
-        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
-        { src: 'photo2_1770195682768.png', caption: "Just us" },
-        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
-        { src: 'photo1_1770195667147.png', caption: "You are magic" },
-        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
-        { src: 'photo2_1770195682768.png', caption: "Just us" },
-        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
-        { src: 'photo1_1770195667147.png', caption: "You are magic" },
         { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
         { src: 'photo2_1770195682768.png', caption: "Just us" },
         { src: 'photo3_1770195698920.png', caption: "My favorite view" },
