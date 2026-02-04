@@ -1,3 +1,26 @@
+/* --- LOADER LOGIC --- */
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+            // Start music auto-attempt after load
+            const audio = document.getElementById('bg-music');
+            if (audio) audio.play().then(() => updateVinyl(true)).catch(() => updateVinyl(false));
+        }, 1000); // 1s delay for dramatic effect
+    }
+});
+// Fallback if load hangs
+setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader && loader.style.opacity !== '0') {
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+    }
+}, 5000);
+
+
 /* --- AUDIO LOGIC --- */
 // Using a synthesized beep for reliability without external assets
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -20,7 +43,7 @@ function playClickSound() {
 }
 
 document.addEventListener('click', () => {
-    playClickSound();
+    // playClickSound(); 
 });
 
 
@@ -54,7 +77,7 @@ window.openWhen = function (mood) {
     switch (mood) {
         case 'sad': title = "When You're Sad"; msg = "Remember that storms don't last forever. I am here for you, always. You are so loved."; break;
         case 'happy': title = "When You're Happy"; msg = "I love seeing you shine! I hope this happiness lasts forever. You deserve it!"; break;
-        case 'miss': title = "When You Miss Me"; msg = "Close your eyes. I'm right there with you in spirit. We'll be together soon."; break;
+        case 'miss': title = "When You Need  Me"; msg = "No matter the reason, I’m here. Always."; break;
         case 'mad': title = "When You're Mad"; msg = "Take a deep breath. I love you even when you're frustrated. Let's talk it out when you're ready."; break;
         default: title = "Open When..."; msg = "I love you.";
     }
@@ -62,13 +85,11 @@ window.openWhen = function (mood) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    /* Background Music */
+    /* Background Music handled in window.load for cleaner start */
     const audio = document.getElementById('bg-music');
-    // Start trying to play
-    audio.play().then(() => updateVinyl(true)).catch(err => updateVinyl(false));
-
     // Fallback interaction listener
     const playOnInteraction = () => {
+        playClickSound(); // Also trigger beep
         audio.play().then(() => {
             updateVinyl(true);
             document.removeEventListener('click', playOnInteraction);
@@ -130,13 +151,25 @@ function observeFinale() {
     if (trigger) observer.observe(trigger);
 }
 
-/* --- SCATTERED GALLERY LOGIC (Draggable) --- */
+/* --- SCATTERED GALLERY LOGIC (Refined Drag) --- */
 function createScatteredGallery() {
     const container = document.querySelector('.scatter-gallery');
     if (!container) return;
     container.innerHTML = '';
 
     const photos = [
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
         { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
         { src: 'photo2_1770195682768.png', caption: "Just us" },
         { src: 'photo3_1770195698920.png', caption: "My favorite view" },
@@ -168,50 +201,75 @@ function createScatteredGallery() {
         item.innerHTML = `<img src="${photo.src}" alt="Memory">`;
         container.appendChild(item);
 
-        // DRAG LOGIC
+        // REFINED DRAG LOGIC
         let isDown = false;
+        let startX = 0, startY = 0;
         let offset = [0, 0];
-        let moved = false;
+        let hasMoved = false;
 
         const startDrag = (e) => {
             isDown = true;
-            moved = false;
-            item.classList.add('dragging');
+            hasMoved = false;
+
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+            startX = clientX;
+            startY = clientY;
+
             offset = [
                 item.offsetLeft - clientX,
                 item.offsetTop - clientY
             ];
+
+            item.classList.add('dragging'); // Pause spin
         };
 
-        const endDrag = () => {
+        const endDrag = (e) => {
             isDown = false;
             item.classList.remove('dragging');
         };
 
         const onDrag = (e) => {
             if (!isDown) return;
-            e.preventDefault();
-            moved = true;
+
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            item.style.left = (clientX + offset[0]) + 'px';
-            item.style.top = (clientY + offset[1]) + 'px';
-            item.style.transform = 'none';
-            item.style.animation = 'none';
+
+            // Calculate distance moved
+            const moveX = clientX - startX;
+            const moveY = clientY - startY;
+            const distance = Math.sqrt(moveX * moveX + moveY * moveY);
+
+            // Threshold: Only consider it a drag if moved > 5 pixels
+            if (distance > 5) {
+                hasMoved = true;
+                e.preventDefault(); // Prevent scroll only if intentional drag
+
+                item.style.left = (clientX + offset[0]) + 'px';
+                item.style.top = (clientY + offset[1]) + 'px';
+                item.style.transform = 'none';
+                item.style.animation = 'none'; // Permanently stop float if moved manually
+            }
         };
 
         const onClick = (e) => {
-            if (!moved) showPhotoModal(photo.src, photo.caption);
+            // Only open if it wasn't a drag interaction
+            if (!hasMoved) {
+                showPhotoModal(photo.src, photo.caption);
+                playClickSound();
+            }
         };
 
+        // Mouse Events
         item.addEventListener('mousedown', startDrag);
-        item.addEventListener('mouseup', (e) => { endDrag(); onClick(e); });
+        document.addEventListener('mouseup', (e) => { if (isDown) { endDrag(e); } });
+        item.addEventListener('mouseup', (e) => { onClick(e); }); // Specific click handler
         document.addEventListener('mousemove', onDrag);
 
+        // Touch Events
         item.addEventListener('touchstart', startDrag, { passive: false });
-        item.addEventListener('touchend', (e) => { endDrag(); onClick(e); });
+        document.addEventListener('touchend', (e) => { if (isDown) { endDrag(e); onClick(e); } });
         document.addEventListener('touchmove', onDrag, { passive: false });
     });
 }
@@ -238,11 +296,94 @@ updateTimer();
 
 /* --- Bottle --- */
 const messages = [
-    "You are my favorite person.", "I love you.", "Your smile lights up my world.", "I want to be with you forever.",
-    "You are incredible.", "You are loved.", "You make the world better.", "Your laugh is magic.",
-    "You are worthy.", "You are strong.", "You are kind.", "You are beautiful.", "You are my everything.",
-    "I appreciate you.", "You are doing great.", "I believe in you.", "You are my safe space."
+    "You are my favorite person.",
+    "I love you more than words can say.",
+    "Your smile lights up my world.",
+    "I want to be with you forever.",
+
+    "You are incredible.",
+    "You are loved.",
+    "You make the world better.",
+    "Your laugh is magic.",
+
+    "You are enough.",
+    "You matter more than you realize.",
+    "You bring light wherever you go.",
+    "You are deeply valued.",
+    "You are doing better than you think.",
+    "You are worthy of good things.",
+    "You are appreciated.",
+    "You make people feel seen.",
+    "You are a gift.",
+    "You are safe to be yourself.",
+
+    "You have a beautiful heart.",
+    "You are stronger than yesterday.",
+    "You are allowed to take up space.",
+    "You make life softer.",
+    "You are important.",
+    "You are not replaceable.",
+    "You bring comfort just by being you.",
+    "You are lovable exactly as you are.",
+    "You are someone’s favorite person.",
+    "You are genuinely special.",
+
+    "You inspire me more than you know.",
+    "You are kind in ways that matter.",
+    "You make my hard days easier.",
+    "You are doing your best and that’s enough.",
+    "You are trusted.",
+    "You are respected.",
+    "You are seen.",
+    "You are heard.",
+    "You are supported.",
+    "You are never too much.",
+
+    "You are allowed to rest.",
+    "You are allowed to grow slowly.",
+    "You are allowed to feel deeply.",
+    "You are allowed to change.",
+    "You are human and that’s beautiful.",
+    "You have a calming presence.",
+    "You make me feel at home.",
+    "You are my safe place.",
+    "You are gentle and powerful.",
+    "You are becoming who you’re meant to be.",
+
+    "You are worthy of love without conditions.",
+    "You are worthy even on bad days.",
+    "You are not a burden.",
+    "You are not alone.",
+    "You are a reason I smile.",
+    "You are easy to love.",
+    "You are allowed to be proud of yourself.",
+    "You are growing in the right direction.",
+    "You are exactly who I want.",
+    "You are everything I didn’t know I needed.",
+
+    "You make my world brighter.",
+    "You make my life better just by being in it.",
+    "You are unforgettable.",
+    "You are more than your mistakes.",
+    "You are more than your past.",
+    "You are enough without proving anything.",
+    "You are allowed to shine.",
+    "You are allowed to be soft.",
+    "You are allowed to be strong.",
+    "You are perfect in your own way.",
+
+    "You are deeply cherished.",
+    "You are my comfort.",
+    "You are my peace.",
+    "You are my happiness.",
+    "You are my person.",
+    "You are loved more than you know.",
+    "You are always on my mind.",
+    "You mean everything to me.",
+    "You are my favorite feeling.",
+    "I’m grateful for you every single day."
 ];
+
 window.openBottle = function () {
     const msgDiv = document.getElementById('bottle-message');
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
@@ -282,17 +423,77 @@ function setupKeyGame() {
 
 /* --- Affirmations --- */
 const affirmations = [
-    "You are worthy.", "You are capable.", "You are loved.", "You are strong.", "You are enough.",
-    "You are beautiful.", "You are brave.", "You are radiant.", "You are kind.", "You are amazing.",
-    "You are smart.", "You are funny.", "You are important.", "You are special.",
-    "You are resilient.", "You are confident.", "You are creative.", "You are powerful.",
-    "You are patient.", "You are gentle.", "You are honest.", "You are thoughtful.",
-    "You are inspiring.", "You are valued.", "You are growing.", "You are improving.",
-    "You are learning.", "You are evolving.", "You are becoming your best self.",
-    "You are allowed to grow.", "You are allowed to rest.", "You are allowed to change.",
-    "You are calm.", "You are grounded.", "You are safe.", "You are supported.",
-    "You are not alone.", "You are understood.", "You are accepted.", "You are deserving of love."
+    "You are worthy.",
+    "You are capable.",
+    "You are loved.",
+    "You are strong.",
+    "You are enough.",
+    "You are beautiful.",
+    "You are brave.",
+    "You are radiant.",
+    "You are kind.",
+    "You are amazing.",
+    "You are smart.",
+    "You are funny.",
+    "You are important.",
+    "You are special.",
+
+    "You are resilient.",
+    "You are confident.",
+    "You are creative.",
+    "You are powerful.",
+    "You are patient.",
+    "You are gentle.",
+    "You are honest.",
+    "You are thoughtful.",
+    "You are inspiring.",
+    "You are valued.",
+
+    "You are growing.",
+    "You are improving.",
+    "You are learning.",
+    "You are evolving.",
+    "You are becoming your best self.",
+    "You are allowed to grow.",
+    "You are allowed to rest.",
+    "You are allowed to change.",
+
+    "You are calm.",
+    "You are grounded.",
+    "You are safe.",
+    "You are supported.",
+    "You are not alone.",
+    "You are understood.",
+    "You are accepted.",
+
+    "You are deserving of love.",
+    "You are deserving of happiness.",
+    "You are deserving of peace.",
+    "You are deserving of success.",
+    "You are deserving of kindness.",
+
+    "You are a good person.",
+    "You are doing your best.",
+    "You are making progress.",
+    "You are on the right path.",
+    "You are exactly where you need to be.",
+
+    "You are worthy of respect.",
+    "You are worthy of patience.",
+    "You are worthy of care.",
+    "You are worthy of joy.",
+
+    "You are more than your mistakes.",
+    "You are more than your past.",
+    "You are not a burden.",
+    "You are not too much.",
+
+    "You are loved just as you are.",
+    "You are enough just as you are.",
+    "You are complete.",
+    "You are whole."
 ];
+
 let affIndex = 0;
 window.nextAffirmation = function () {
     affIndex = (affIndex + 1) % affirmations.length;

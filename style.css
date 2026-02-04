@@ -29,6 +29,46 @@ html {
     color: var(--text-color);
 }
 
+/* --- LOADER --- */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff0f5;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.loader-heart {
+    font-size: 80px;
+    animation: loaderPulse 1s infinite alternate;
+}
+
+.loader-text {
+    margin-top: 20px;
+    font-family: 'Dancing Script';
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+@keyframes loaderPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
 .container {
     width: 100%;
     height: 100%;
@@ -128,7 +168,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     z-index: 10001;
     display: none;
     justify-content: center;
@@ -152,6 +192,7 @@ html {
     flex-direction: column;
     align-items: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
 
 .photo-modal-content img {
@@ -355,7 +396,7 @@ html {
     color: #555;
 }
 
-/* --- 3. Notepad --- */
+/* --- 3. Notepad (Updated fonts) --- */
 .notepad {
     width: 80%;
     max-width: 500px;
@@ -431,6 +472,8 @@ html {
     height: 100%;
     object-fit: cover;
     border-radius: 2px;
+    pointer-events: none;
+    /* Help drag stability */
 }
 
 .scatter-photo.dragging {
@@ -528,7 +571,7 @@ html {
     font-size: 0.8rem;
 }
 
-/* --- 6. OUR SONG (VINYL PLAYER) (Replacing This or That) --- */
+/* --- 6. OUR SONG (VINYL PLAYER) --- */
 .vinyl-container {
     background: white;
     padding: 40px;
@@ -588,7 +631,6 @@ html {
     z-index: 5;
     border: 3px solid white;
     background-image: url('classic-heart-wax-stamp-free-png.webp');
-    /* Reuse or simple color */
     background-size: cover;
 }
 
