@@ -44,7 +44,7 @@
         <div class="heart" style="left: 90%; animation-duration: 13s; animation-delay: 3s;"></div>
     </div>
 
-    <audio id="bg-music" controls loop>
+    <audio id="bg-music" loop>
         <source src="Le John - Naiilang (Official Lyric Video).mp3" type="audio/mp3">
     </audio>
 
@@ -100,22 +100,32 @@
             <div class="notepad">
                 <h2>Our Bucket List</h2>
                 <ul>
-                    <li><input type="checkbox"> Stargazing connection</li>
-                    <li><input type="checkbox"> Travel to Japan</li>
-                    <li><input type="checkbox"> Adopt a cat</li>
+                    <li><input type="checkbox" checked> Stargazing</li>
+                    <li><input type="checkbox" checked> Keep choosing us</li>
+                    <li><input type="checkbox" checked> Adopt a cat</li>
                     <li><input type="checkbox"> Learn to cook together</li>
                     <li><input type="checkbox" checked> Fall in love every day</li>
+                    <li><input type="checkbox"> Grow old together</li>
+                    <li><input type="checkbox"> Get married</li>
+                    <li><input type="checkbox"> Have a baby</li>
+                    <li><input type="checkbox"> Live happily ever after</li>
+                    <li><input type="checkbox"> Travel to Korea</li>
+                    <li><input type="checkbox"> Travel to Japan</li>
+                    <li><input type="checkbox"> Travel to the moon</li>
+                    <li><input type="checkbox"> Travel to the stars</li>
+                    <li><input type="checkbox"> Travel to the universe</li>
+                    <p>more 9,123,085 other...</p>
                 </ul>
             </div>
         </section>
 
-        <!-- SLIDE 4: SCATTERED HEARTBEAT GALLERY (New) -->
+        <!-- SLIDE 4: SCATTERED HEARTBEAT GALLERY (Draggable) -->
         <section class="slide"
             style="background: radial-gradient(circle, rgba(255,235,238,1) 0%, rgba(248,187,208,1) 100%);">
             <div style="text-align: center; margin-bottom: 20px; position: absolute; top: 5%; width: 100%; z-index:10;">
                 <h2 class="script-font" style="font-size: 3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                     Our Memories</h2>
-                <p style="color: white; font-style: italic;">(Tap a memory to see it)</p>
+                <p style="color: white; font-style: italic;">(Drag the photos around!)</p>
             </div>
             <!-- Scattered Container -->
             <div class="scatter-gallery">
@@ -127,7 +137,7 @@
         <section class="slide" style="background: #FFF3E0; flex-direction:column;">
             <h2 class="script-font" style="font-size:3rem; color:#E65100; margin-bottom:20px;">Love Coupons</h2>
             <div class="coupons-container">
-                <div class="coupon" onclick="customAlert('Redeemed!', 'One Tight Hug! 🤗')">
+                <div class="coupon" onclick="customAlert('Redeemed!', 'Unlimited Tight Hug! 🤗')">
                     <div class="coupon-left">
                         <h3>Free Hug</h3>
                         <p>Valid anytime.</p>
@@ -141,17 +151,17 @@
                     </div>
                     <div class="coupon-right">TICKET</div>
                 </div>
-                <div class="coupon" onclick="customAlert('Redeemed!', 'Yes Day! ✅')">
+                <div class="coupon" onclick="customAlert('Redeemed!', 'You pick the activity, I’m in 🎲')">
                     <div class="coupon-left">
-                        <h3>Yes Day</h3>
-                        <p>I say yes to everything.</p>
+                        <h3>Activity</h3>
+                        <p>No question asked.</p>
                     </div>
                     <div class="coupon-right">VIP</div>
                 </div>
                 <div class="coupon" onclick="customAlert('Redeemed!', 'Massage! 💆‍♂️')">
                     <div class="coupon-left">
                         <h3>Massage</h3>
-                        <p>15 minutes. Or more.</p>
+                        <p>1 minute. Or less.</p>
                     </div>
                     <div class="coupon-right">RELAX</div>
                 </div>
@@ -181,20 +191,20 @@
             </div>
         </section>
 
-        <!-- SLIDE 7: QUIZ -->
+        <!-- SLIDE 7: VINYL PLAYER (REPLACED THIS OR THAT) -->
         <section class="slide" style="background: rgba(255,255,255,0.7);">
-            <div class="quiz-container">
-                <h2>How well do you know us?</h2>
-                <div class="question" id="q1">
-                    <p style="margin:20px 0;">1. Where did we first meet?</p>
-                    <button onclick="checkAnswer(this, false)">The Library</button>
-                    <button onclick="checkAnswer(this, true)">Coffee Shop</button>
-                    <button onclick="checkAnswer(this, false)">A Party</button>
+            <div class="vinyl-container">
+                <h2
+                    style="font-family:'Dancing Script'; font-size:2.5rem; color:var(--primary-color); margin-bottom:20px;">
+                    Song</h2>
+                <div class="record-player">
+                    <div class="record"> <!-- Add 'playing' class to spin -->
+                        <div class="record-label"></div>
+                    </div>
+                    <div class="tonearm"></div> <!-- Add 'playing' class to move arm -->
                 </div>
-                <div class="question" id="q2" style="display:none;">
-                    <p style="margin:20px 0;">2. What is my favorite thing about you?</p>
-                    <button onclick="checkAnswer(this, true)">Everything</button>
-                    <button onclick="checkAnswer(this, true)">Your Smile</button>
+                <div class="play-controls">
+                    <button id="play-btn" onclick="toggleMusic()">Play Our Song ▶️</button>
                 </div>
             </div>
         </section>

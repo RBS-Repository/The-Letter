@@ -392,31 +392,38 @@ html {
     accent-color: var(--primary-color);
 }
 
-/* --- 4. SCATTERED GALLERY (New) --- */
+.notepad p {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 10px;
+    font-family: 'Indie Flower';
+    font-style: italic;
+}
+
+/* --- 4. FLOATING GALLERY (Draggable) --- */
 .scatter-gallery {
     position: relative;
     width: 100%;
-    height: 80%;
-    /* Takes up most of the slide */
+    height: 100%;
     overflow: hidden;
-    /* Keep scatter inside */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Fallback */
 }
 
 .scatter-photo {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background: white;
     padding: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.3s;
     border-radius: 5px;
-    animation: heartBeatObsess 2s infinite ease-in-out;
+    animation: floatAround 12s infinite ease-in-out alternate;
+    cursor: grab;
+    touch-action: none;
+}
+
+.scatter-photo:active {
+    cursor: grabbing;
+    z-index: 1000 !important;
 }
 
 .scatter-photo img {
@@ -426,36 +433,31 @@ html {
     border-radius: 2px;
 }
 
-.scatter-photo:hover {
-    z-index: 100;
-    transform: scale(1.2) !important;
-    animation: none;
-    border: 2px solid var(--primary-color);
+.scatter-photo.dragging {
+    animation-play-state: paused;
+    transition: none;
+    z-index: 1000;
 }
 
-@keyframes heartBeatObsess {
+@keyframes floatAround {
     0% {
-        transform: scale(1);
+        transform: translate(0, 0) rotate(0deg);
     }
 
-    15% {
-        transform: scale(1.1);
+    25% {
+        transform: translate(20px, -30px) rotate(5deg);
     }
 
-    30% {
-        transform: scale(1);
+    50% {
+        transform: translate(-20px, 20px) rotate(-5deg);
     }
 
-    45% {
-        transform: scale(1.1);
-    }
-
-    60% {
-        transform: scale(1);
+    75% {
+        transform: translate(30px, 0) rotate(3deg);
     }
 
     100% {
-        transform: scale(1);
+        transform: translate(0, -20px) rotate(-3deg);
     }
 }
 
@@ -503,12 +505,12 @@ html {
 .coupon-left h3 {
     color: var(--primary-color);
     font-family: 'Dancing Script';
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-bottom: 5px;
 }
 
 .coupon-left p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #666;
 }
 
@@ -526,29 +528,109 @@ html {
     font-size: 0.8rem;
 }
 
-/* --- 6. Quiz --- */
-.quiz-container {
+/* --- 6. OUR SONG (VINYL PLAYER) (Replacing This or That) --- */
+.vinyl-container {
     background: white;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
     width: 90%;
 }
 
-.quiz-container button {
-    display: block;
+.record-player {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+.record {
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border: 2px solid var(--primary-color);
-    background: none;
-    color: var(--primary-color);
-    font-size: 1.1rem;
+    height: 100%;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 5px solid #222;
+    animation: spin 3s linear infinite;
+    animation-play-state: paused;
+}
+
+.record::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: repeating-radial-gradient(#333, #333 2px, #444 3px, #444 4px);
+    z-index: 1;
+}
+
+.record.playing {
+    animation-play-state: running;
+}
+
+.record-label {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 5;
+    border: 3px solid white;
+    background-image: url('classic-heart-wax-stamp-free-png.webp');
+    /* Reuse or simple color */
+    background-size: cover;
+}
+
+.tonearm {
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    width: 80px;
+    height: 10px;
+    background: #888;
+    transform-origin: top right;
+    transform: rotate(-30deg);
+    transition: transform 0.5s;
+    z-index: 10;
+    border-radius: 5px;
+}
+
+.tonearm.playing {
+    transform: rotate(15deg);
+}
+
+.play-controls button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 30px;
     border-radius: 30px;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+
+.play-controls button:hover {
+    transform: scale(1.05);
+    background: var(--secondary-color);
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* --- 7. Bottle --- */
@@ -894,9 +976,19 @@ html {
         font-size: 0.7rem;
     }
 
-    .quiz-container {
-        padding: 20px;
-        width: 95%;
+    /* Vinyl */
+    .vinyl-container {
+        padding: 25px;
+    }
+
+    .record-player {
+        width: 160px;
+        height: 160px;
+    }
+
+    .record-label {
+        width: 60px;
+        height: 60px;
     }
 
     .card {
@@ -922,20 +1014,19 @@ html {
 
     /* Scatter adjust */
     .scatter-photo {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
     }
 }
 
 #bg-music {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0.5;
-    z-index: 1000;
-    width: 150px;
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    opacity: 0;
 }
 
+/* Hidden, controlled by Vinyl */
 .floating-hearts .heart {
     position: fixed;
     z-index: 0;

@@ -1,3 +1,29 @@
+/* --- AUDIO LOGIC --- */
+// Using a synthesized beep for reliability without external assets
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playClickSound() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+}
+
+document.addEventListener('click', () => {
+    playClickSound();
+});
+
+
 /* --- Custom Alert & Open When Logic --- */
 function customAlert(title, message) {
     const overlay = document.querySelector('.custom-alert-overlay');
@@ -36,10 +62,15 @@ window.openWhen = function (mood) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    /* Audio */
+    /* Background Music */
     const audio = document.getElementById('bg-music');
+    // Start trying to play
+    audio.play().then(() => updateVinyl(true)).catch(err => updateVinyl(false));
+
+    // Fallback interaction listener
     const playOnInteraction = () => {
         audio.play().then(() => {
+            updateVinyl(true);
             document.removeEventListener('click', playOnInteraction);
             document.removeEventListener('touchstart', playOnInteraction);
         }).catch(err => { });
@@ -49,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     observeFinale();
     setupKeyGame();
-    createScatteredGallery(); // init scattered photos
+    createScatteredGallery();
 
     document.querySelector('.custom-alert-overlay').addEventListener('click', (e) => {
         if (e.target === document.querySelector('.custom-alert-overlay')) closeAlert();
@@ -59,6 +90,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === document.querySelector('.photo-modal-overlay')) closePhotoModal();
     });
 });
+
+/* --- Vinyl Player Logic --- */
+window.toggleMusic = function () {
+    const audio = document.getElementById('bg-music');
+    if (audio.paused) {
+        audio.play().then(() => updateVinyl(true));
+    } else {
+        audio.pause();
+        updateVinyl(false);
+    }
+}
+
+function updateVinyl(isPlaying) {
+    const record = document.querySelector('.record');
+    const arm = document.querySelector('.tonearm');
+    const btn = document.getElementById('play-btn');
+
+    if (isPlaying) {
+        if (record) record.classList.add('playing');
+        if (arm) arm.classList.add('playing');
+        if (btn) btn.textContent = "Pause Music ⏸️";
+    } else {
+        if (record) record.classList.remove('playing');
+        if (arm) arm.classList.remove('playing');
+        if (btn) btn.textContent = "Play Our Song ▶️";
+    }
+}
 
 /* --- Finale Observer --- */
 function observeFinale() {
@@ -72,7 +130,7 @@ function observeFinale() {
     if (trigger) observer.observe(trigger);
 }
 
-/* --- SCATTERED GALLERY LOGIC --- */
+/* --- SCATTERED GALLERY LOGIC (Draggable) --- */
 function createScatteredGallery() {
     const container = document.querySelector('.scatter-gallery');
     if (!container) return;
@@ -91,45 +149,70 @@ function createScatteredGallery() {
         { src: 'photo2_1770195682768.png', caption: "Just us" },
         { src: 'photo3_1770195698920.png', caption: "My favorite view" },
         { src: 'photo1_1770195667147.png', caption: "You are magic" },
-        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
-        { src: 'photo2_1770195682768.png', caption: "Just us" },
-        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
-        { src: 'photo1_1770195667147.png', caption: "You are magic" },
-        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
-        { src: 'photo2_1770195682768.png', caption: "Just us" },
-        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
-        { src: 'photo1_1770195667147.png', caption: "You are magic" },
-        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
-        { src: 'photo2_1770195682768.png', caption: "Just us" },
-        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
-        { src: 'photo1_1770195667147.png', caption: "You are magic" },
         { src: 'photo2_1770195682768.png', caption: "Forever & Always" }
     ];
-
-    // We need to place them so they don't overlap too badly, or just purely random. User asked for "scatter randomly".
-    // Let's use constrained random to ensure they are somewhat spread out.
-    // Or just pure random with limits.
 
     photos.forEach((photo, i) => {
         const item = document.createElement('div');
         item.className = 'scatter-photo';
-
-        // Random Position (keep inside 80% width/height to avoid cutoff)
-        const left = Math.random() * 70 + 10; // 10% to 80%
-        const top = Math.random() * 70 + 10; // 10% to 80%
-
-        // Random Animation Delay so they don't beat in sync
-        const delay = Math.random() * 2; // 0-2s delay
+        const left = Math.random() * 80 + 5;
+        const top = Math.random() * 80 + 10;
+        const duration = Math.random() * 7 + 8;
+        const delay = Math.random() * 5;
 
         item.style.left = left + '%';
         item.style.top = top + '%';
+        item.style.animationDuration = duration + 's';
         item.style.animationDelay = delay + 's';
 
         item.innerHTML = `<img src="${photo.src}" alt="Memory">`;
-
-        item.onclick = () => showPhotoModal(photo.src, photo.caption);
-
         container.appendChild(item);
+
+        // DRAG LOGIC
+        let isDown = false;
+        let offset = [0, 0];
+        let moved = false;
+
+        const startDrag = (e) => {
+            isDown = true;
+            moved = false;
+            item.classList.add('dragging');
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            offset = [
+                item.offsetLeft - clientX,
+                item.offsetTop - clientY
+            ];
+        };
+
+        const endDrag = () => {
+            isDown = false;
+            item.classList.remove('dragging');
+        };
+
+        const onDrag = (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            moved = true;
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            item.style.left = (clientX + offset[0]) + 'px';
+            item.style.top = (clientY + offset[1]) + 'px';
+            item.style.transform = 'none';
+            item.style.animation = 'none';
+        };
+
+        const onClick = (e) => {
+            if (!moved) showPhotoModal(photo.src, photo.caption);
+        };
+
+        item.addEventListener('mousedown', startDrag);
+        item.addEventListener('mouseup', (e) => { endDrag(); onClick(e); });
+        document.addEventListener('mousemove', onDrag);
+
+        item.addEventListener('touchstart', startDrag, { passive: false });
+        item.addEventListener('touchend', (e) => { endDrag(); onClick(e); });
+        document.addEventListener('touchmove', onDrag, { passive: false });
     });
 }
 
@@ -152,23 +235,6 @@ function updateTimer() {
 }
 setInterval(updateTimer, 1000);
 updateTimer();
-
-/* --- Quiz --- */
-window.checkAnswer = function (btn, isCorrect) {
-    if (isCorrect) {
-        btn.style.background = '#4CAF50'; btn.style.color = 'white'; btn.innerHTML = 'Correct! ❤️';
-        const parent = btn.closest('.question');
-        setTimeout(() => {
-            parent.style.display = 'none';
-            const next = parent.nextElementSibling;
-            if (next) next.style.display = 'block';
-            else customAlert("Quiz Complete!", "You know me so well! ❤️");
-        }, 1000);
-    } else {
-        btn.style.background = '#f44336'; btn.style.color = 'white'; btn.innerHTML = 'Try Again 🥺';
-        setTimeout(() => { btn.style.background = 'none'; btn.style.color = 'var(--primary-color)'; btn.innerHTML = 'Try Again'; }, 1500);
-    }
-}
 
 /* --- Bottle --- */
 const messages = [
