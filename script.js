@@ -532,3 +532,18 @@ window.nextAffirmation = function () {
     affIndex = (affIndex + 1) % affirmations.length;
     document.getElementById('aff-text').textContent = affirmations[affIndex];
 }
+
+/* --- ANTI-COPY PROTECTION --- */
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+document.addEventListener('keydown', function (e) {
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+        (e.ctrlKey && e.key === 'U')
+    ) {
+        e.preventDefault();
+        return false;
+    }
+});
