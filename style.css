@@ -62,7 +62,7 @@ html {
     justify-content: center;
 }
 
-/* --- CUSTOM ALERT (Keep existing) --- */
+/* --- CUSTOM ALERT --- */
 .custom-alert-overlay {
     position: fixed;
     top: 0;
@@ -119,6 +119,54 @@ html {
 
 .custom-alert-btn:hover {
     background: var(--secondary-color);
+}
+
+/* --- PHOTO MODAL --- */
+.photo-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10001;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.photo-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.photo-modal-content {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.photo-modal-content img {
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 5px;
+}
+
+.photo-modal-caption {
+    margin-top: 15px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--primary-color);
+    padding: 10px;
+    text-align: center;
 }
 
 /* --- 1. Envelope --- */
@@ -344,49 +392,70 @@ html {
     accent-color: var(--primary-color);
 }
 
-/* --- 4. PHOTO SPHERE --- */
-.scene {
-    width: 300px;
-    height: 300px;
-    perspective: 1000px;
-    touch-action: none;
+/* --- 4. SCATTERED GALLERY (New) --- */
+.scatter-gallery {
     position: relative;
+    width: 100%;
+    height: 80%;
+    /* Takes up most of the slide */
+    overflow: hidden;
+    /* Keep scatter inside */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Fallback */
 }
 
-.sphere-wrapper {
+.scatter-photo {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: white;
+    padding: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s;
+    border-radius: 5px;
+    animation: heartBeatObsess 2s infinite ease-in-out;
+}
+
+.scatter-photo img {
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-style: preserve-3d;
-    animation: rotateSphere 30s infinite linear;
+    object-fit: cover;
+    border-radius: 2px;
 }
 
-.sphere-face {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    left: 75px;
-    top: 75px;
-    /* Center in 300x300 scene */
-    background-size: cover;
-    background-position: center;
-    border: 3px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    backface-visibility: hidden;
-    /* Or visible? Let's keep distinct */
-    backface-visibility: visible;
+.scatter-photo:hover {
+    z-index: 100;
+    transform: scale(1.2) !important;
+    animation: none;
+    border: 2px solid var(--primary-color);
 }
 
-/* Animation needs to be applied to wrapper rotation */
-@keyframes rotateSphere {
+@keyframes heartBeatObsess {
     0% {
-        transform: rotateY(0deg) rotateX(0deg);
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.1);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.1);
+    }
+
+    60% {
+        transform: scale(1);
     }
 
     100% {
-        transform: rotateY(360deg) rotateX(360deg);
+        transform: scale(1);
     }
 }
 
@@ -394,14 +463,18 @@ html {
 .coupons-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     align-items: center;
-    width: 100%;
+    width: 95%;
+    max-width: 400px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 10px;
 }
 
 .coupon {
-    width: 300px;
-    height: 120px;
+    width: 100%;
+    height: 100px;
     background: white;
     border-radius: 10px;
     display: flex;
@@ -410,15 +483,16 @@ html {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s;
+    flex-shrink: 0;
 }
 
 .coupon:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .coupon-left {
     width: 70%;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -429,7 +503,13 @@ html {
 .coupon-left h3 {
     color: var(--primary-color);
     font-family: 'Dancing Script';
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.coupon-left p {
+    font-size: 0.9rem;
+    color: #666;
 }
 
 .coupon-right {
@@ -442,7 +522,8 @@ html {
     font-weight: bold;
     writing-mode: vertical-rl;
     text-orientation: mixed;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
+    font-size: 0.8rem;
 }
 
 /* --- 6. Quiz --- */
@@ -571,9 +652,9 @@ html {
     transform: scale(0.95);
 }
 
-/* --- 10. OUR PROMISES (Replaced Journey) --- */
+/* --- 10. OUR PROMISES --- */
 .promises-section {
-    width: 85%;
+    width: 90%;
     max-width: 600px;
 }
 
@@ -584,32 +665,27 @@ html {
 
 .promises-list li {
     background: white;
-    margin: 15px 0;
-    padding: 20px;
+    margin: 10px 0;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     font-family: 'Dancing Script', cursive;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--primary-color);
     transition: transform 0.3s;
-}
-
-.promises-list li:hover {
-    transform: scale(1.02);
 }
 
 /* --- 11. Reasons (4 Cards) --- */
 .reasons-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Force 2 cols to show 4 total nicely */
-    gap: 15px;
-    width: 90%;
-    max-width: 800px;
+    gap: 10px;
+    width: 95%;
+    max-width: 600px;
 }
 
 .card {
-    height: 200px;
+    height: 180px;
     perspective: 1000px;
 }
 
@@ -654,6 +730,50 @@ html {
     transform: rotateY(180deg);
     font-size: 0.9rem;
 }
+
+/* --- 12. "OPEN WHEN" Section --- */
+.open-when-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.open-when-card {
+    background: white;
+    border: 2px dashed var(--primary-color);
+    border-radius: 10px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.open-when-card:hover {
+    background: #fff0f5;
+    transform: scale(1.03);
+}
+
+.open-when-card h4 {
+    font-family: 'Indie Flower';
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.open-when-card span {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
 
 /* --- FINALE --- */
 .finale-overlay {
@@ -732,52 +852,78 @@ html {
     transform: scale(1.05);
 }
 
-/* Mobile */
+/* --- Mobile Responsiveness (Extreme Polish) --- */
 @media (max-width: 768px) {
-    .envelope-wrapper {
-        width: 260px;
-        height: 160px;
+    .container {
+        scroll-snap-type: y mandatory;
     }
 
-    .letter-preview {
-        height: 140px;
-    }
-
-    .letter-content {
-        width: 95%;
-        padding: 20px;
-        font-size: 0.9rem;
-    }
-
-    .paper-note {
-        width: 90%;
-        padding: 20px;
-        margin: 0;
+    .slide {
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     .scene {
-        width: 250px;
-        height: 250px;
+        width: 200px;
+        height: 200px;
     }
 
-    .sphere-face {
-        width: 100px;
+    .script-font {
+        font-size: 2.2rem !important;
+    }
+
+    .promises-list li {
+        font-size: 1rem;
+        padding: 10px;
+        margin: 8px 0;
+    }
+
+    .coupon {
+        height: 80px;
+    }
+
+    .coupon-left h3 {
+        font-size: 1.2rem;
+    }
+
+    .coupon-left p {
+        font-size: 0.8rem;
+    }
+
+    .coupon-right {
+        font-size: 0.7rem;
+    }
+
+    .quiz-container {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .card {
+        height: 140px;
+    }
+
+    .card-front {
+        font-size: 1.2rem;
+    }
+
+    .card-back {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+
+    .open-when-card {
         height: 100px;
-        left: 75px;
-        top: 75px;
     }
 
-    /* Mobile sizing */
-    .reasons-grid {
-        grid-template-columns: 1fr 1fr;
+    .open-when-card h4 {
+        font-size: 1rem;
     }
 
-    .finale-text {
-        font-size: 2.5rem;
-    }
-
-    .big-heart {
-        font-size: 100px;
+    /* Scatter adjust */
+    .scatter-photo {
+        width: 80px;
+        height: 80px;
     }
 }
 

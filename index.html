@@ -18,6 +18,14 @@
         </div>
     </div>
 
+    <!-- NEW PHOTO MODAL -->
+    <div class="photo-modal-overlay">
+        <div class="photo-modal-content">
+            <img src="" alt="Memory">
+            <div class="photo-modal-caption"></div>
+        </div>
+    </div>
+
     <div class="finale-overlay">
         <div class="big-heart">❤️</div>
         <div class="finale-text">I Love You <br> Forever & Always</div>
@@ -101,46 +109,79 @@
             </div>
         </section>
 
-        <!-- SLIDE 4: 8-FACE SPHERE -->
+        <!-- SLIDE 4: SCATTERED HEARTBEAT GALLERY (New) -->
         <section class="slide"
             style="background: radial-gradient(circle, rgba(255,235,238,1) 0%, rgba(248,187,208,1) 100%);">
-            <div style="text-align: center; margin-bottom: 50px; position: absolute; top: 10%;">
+            <div style="text-align: center; margin-bottom: 20px; position: absolute; top: 5%; width: 100%; z-index:10;">
                 <h2 class="script-font" style="font-size: 3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
                     Our Memories</h2>
-                <p style="color: white; font-style: italic;">(Touch & Drag - Spinnable)</p>
+                <p style="color: white; font-style: italic;">(Tap a memory to see it)</p>
             </div>
-            <div class="scene">
-                <!-- Wrapper for JS injected faces -->
-                <div class="sphere-wrapper">
-                    <!-- JS will fill this with faces -->
+            <!-- Scattered Container -->
+            <div class="scatter-gallery">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- SLIDE 5: LOVE COUPONS (EXPANDED) -->
+        <section class="slide" style="background: #FFF3E0; flex-direction:column;">
+            <h2 class="script-font" style="font-size:3rem; color:#E65100; margin-bottom:20px;">Love Coupons</h2>
+            <div class="coupons-container">
+                <div class="coupon" onclick="customAlert('Redeemed!', 'One Tight Hug! 🤗')">
+                    <div class="coupon-left">
+                        <h3>Free Hug</h3>
+                        <p>Valid anytime.</p>
+                    </div>
+                    <div class="coupon-right">REDEEM</div>
+                </div>
+                <div class="coupon" onclick="customAlert('Redeemed!', 'Movie Night! 🎬')">
+                    <div class="coupon-left">
+                        <h3>Movie Night</h3>
+                        <p>Your choice.</p>
+                    </div>
+                    <div class="coupon-right">TICKET</div>
+                </div>
+                <div class="coupon" onclick="customAlert('Redeemed!', 'Yes Day! ✅')">
+                    <div class="coupon-left">
+                        <h3>Yes Day</h3>
+                        <p>I say yes to everything.</p>
+                    </div>
+                    <div class="coupon-right">VIP</div>
+                </div>
+                <div class="coupon" onclick="customAlert('Redeemed!', 'Massage! 💆‍♂️')">
+                    <div class="coupon-left">
+                        <h3>Massage</h3>
+                        <p>15 minutes. Or more.</p>
+                    </div>
+                    <div class="coupon-right">RELAX</div>
                 </div>
             </div>
         </section>
 
-        <!-- SLIDE 5: LOVE COUPONS -->
-        <section class="slide" style="background: #FFF3E0;">
-            <div style="text-align:center; width:90%;">
-                <h2 class="script-font" style="font-size:3rem; color:#E65100; margin-bottom:30px;">Love Coupons</h2>
-                <div class="coupons-container">
-                    <div class="coupon" onclick="customAlert('Redeemed!', 'One Tight Hug! 🤗')">
-                        <div class="coupon-left">
-                            <h3>Free Hug</h3>
-                            <p>Valid anytime.</p>
-                        </div>
-                        <div class="coupon-right">REDEEM</div>
-                    </div>
-                    <div class="coupon" onclick="customAlert('Redeemed!', 'Movie Night! 🎬')">
-                        <div class="coupon-left">
-                            <h3>Movie Night</h3>
-                            <p>Your choice.</p>
-                        </div>
-                        <div class="coupon-right">TICKET</div>
-                    </div>
+        <!-- SLIDE 6: "OPEN WHEN" ENVELOPES -->
+        <section class="slide" style="background: #F3E5F5; flex-direction: column;">
+            <h2 class="script-font" style="font-size:3rem; color: #7B1FA2; margin-bottom:20px;">Open When...</h2>
+            <div class="open-when-grid">
+                <div class="open-when-card" onclick="openWhen('sad')">
+                    <span>😢</span>
+                    <h4>You're Sad</h4>
+                </div>
+                <div class="open-when-card" onclick="openWhen('happy')">
+                    <span>😊</span>
+                    <h4>You're Happy</h4>
+                </div>
+                <div class="open-when-card" onclick="openWhen('miss')">
+                    <span>💕</span>
+                    <h4>You Miss Me</h4>
+                </div>
+                <div class="open-when-card" onclick="openWhen('mad')">
+                    <span>😠</span>
+                    <h4>You're Mad</h4>
                 </div>
             </div>
         </section>
 
-        <!-- SLIDE 6: QUIZ -->
+        <!-- SLIDE 7: QUIZ -->
         <section class="slide" style="background: rgba(255,255,255,0.7);">
             <div class="quiz-container">
                 <h2>How well do you know us?</h2>
@@ -158,7 +199,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 7: BOTTLE -->
+        <!-- SLIDE 8: BOTTLE -->
         <section class="slide" style="background: linear-gradient(to bottom, #87CEEB, #E0F7FA);">
             <div class="bottle-section">
                 <h2 class="script-font" style="font-size:3rem; color: #0277BD;">Message in a Bottle</h2>
@@ -167,7 +208,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 8: KEY GAME -->
+        <!-- SLIDE 9: KEY GAME -->
         <section class="slide" style="background: #F8BBD0;">
             <div style="text-align:center;">
                 <h2 class="script-font" style="font-size:3rem; color: #880E4F; margin-bottom:20px;">Unlock My Heart</h2>
@@ -178,7 +219,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 9: AFFIRMATIONS -->
+        <!-- SLIDE 10: AFFIRMATIONS -->
         <section class="slide" style="background: #E1BEE7;">
             <div style="text-align:center;">
                 <h2 class="script-font" style="font-size:3rem; color: #4A148C; margin-bottom:30px;">Daily Reminder</h2>
@@ -189,7 +230,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 10: OUR PROMISES (NEW) -->
+        <!-- SLIDE 11: OUR PROMISES -->
         <section class="slide" style="background: #E0F2F1;">
             <h2 class="script-font" style="font-size:3rem; color: #00695C; position:absolute; top:20px;">Our Promises
             </h2>
@@ -203,7 +244,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 11: REASONS (4 Cards) -->
+        <!-- SLIDE 12: REASONS (4 Cards) -->
         <section class="slide" style="flex-direction: column; background: rgba(255,255,255,0.5);">
             <h2 class="script-font"
                 style="font-size: 3rem; color: var(--primary-color); margin-bottom: 40px; text-align:center;">Reasons I
@@ -236,7 +277,7 @@
             </div>
         </section>
 
-        <!-- SLIDE 12: TRIGGER ONLY -->
+        <!-- SLIDE 13: TRIGGER ONLY -->
         <section class="slide" style="background: transparent;">
             <div id="finale-trigger" style="text-align:center; opacity:0.5;">❤️</div>
         </section>

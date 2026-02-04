@@ -1,4 +1,4 @@
-/* --- Custom Alert Logic --- */
+/* --- Custom Alert & Open When Logic --- */
 function customAlert(title, message) {
     const overlay = document.querySelector('.custom-alert-overlay');
     const boxTitle = overlay.querySelector('h3');
@@ -8,6 +8,32 @@ function customAlert(title, message) {
     overlay.classList.add('active');
 }
 function closeAlert() { document.querySelector('.custom-alert-overlay').classList.remove('active'); }
+
+/* --- Photo Modal Logic --- */
+function showPhotoModal(src, caption) {
+    const overlay = document.querySelector('.photo-modal-overlay');
+    const img = overlay.querySelector('img');
+    const txt = overlay.querySelector('.photo-modal-caption');
+    img.src = src;
+    txt.textContent = caption;
+    overlay.classList.add('active');
+}
+function closePhotoModal() {
+    document.querySelector('.photo-modal-overlay').classList.remove('active');
+}
+
+window.openWhen = function (mood) {
+    let msg = "";
+    let title = "";
+    switch (mood) {
+        case 'sad': title = "When You're Sad"; msg = "Remember that storms don't last forever. I am here for you, always. You are so loved."; break;
+        case 'happy': title = "When You're Happy"; msg = "I love seeing you shine! I hope this happiness lasts forever. You deserve it!"; break;
+        case 'miss': title = "When You Miss Me"; msg = "Close your eyes. I'm right there with you in spirit. We'll be together soon."; break;
+        case 'mad': title = "When You're Mad"; msg = "Take a deep breath. I love you even when you're frustrated. Let's talk it out when you're ready."; break;
+        default: title = "Open When..."; msg = "I love you.";
+    }
+    customAlert(title, msg);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     /* Audio */
@@ -23,10 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     observeFinale();
     setupKeyGame();
-    createSphere(); // Generate the 3D Sphere of images
+    createScatteredGallery(); // init scattered photos
 
     document.querySelector('.custom-alert-overlay').addEventListener('click', (e) => {
         if (e.target === document.querySelector('.custom-alert-overlay')) closeAlert();
+    });
+
+    document.querySelector('.photo-modal-overlay').addEventListener('click', (e) => {
+        if (e.target === document.querySelector('.photo-modal-overlay')) closePhotoModal();
     });
 });
 
@@ -42,87 +72,70 @@ function observeFinale() {
     if (trigger) observer.observe(trigger);
 }
 
-/* --- 3D PHOTO SPHERE LOGIC --- */
-const sphere = document.querySelector('.sphere-wrapper'); // We'll rename carousel to sphere-wrapper
-const scene = document.querySelector('.scene');
-let isDragging = false;
-let startX = 0, startY = 0;
-let curRotX = 0, curRotY = 0;
-let initRotX = 0, initRotY = 0;
+/* --- SCATTERED GALLERY LOGIC --- */
+function createScatteredGallery() {
+    const container = document.querySelector('.scatter-gallery');
+    if (!container) return;
+    container.innerHTML = '';
 
-function createSphere() {
-    const wrapper = document.querySelector('.sphere-wrapper');
-    if (!wrapper) return;
-    wrapper.innerHTML = '';
-
-    // We want ~8-12 images distributed on a sphere
-    // Simple approach: 2 Rings of 4, or just Fibonacci Sphere distribution?
-    // Let's do 2 Rings of 6 images = 12 images. Or just 8 images (2 rings of 4).
-    // User asked for "Octagon" (8) "Sphere". So 8 images.
-    // Let's do a single ring of 8 but tilted? No, that's a cylinder.
-    // True Sphere: 
-    // Image 1: Top (90deg) - maybe not, distortion.
-    // Ring A (Top-ish): 4 images. Ring B (Bottom-ish): 4 images.
-
-    const images = [
-        'photo1_1770195667147.png', 'photo2_1770195682768.png', 'photo3_1770195698920.png',
-        'photo1_1770195667147.png', // repeating for demo
-        'photo2_1770195682768.png',
-        'photo3_1770195698920.png',
-        'photo1_1770195667147.png',
-        'photo2_1770195682768.png'
+    const photos = [
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo1_1770195667147.png', caption: "Our first adventure" },
+        { src: 'photo2_1770195682768.png', caption: "Just us" },
+        { src: 'photo3_1770195698920.png', caption: "My favorite view" },
+        { src: 'photo1_1770195667147.png', caption: "You are magic" },
+        { src: 'photo2_1770195682768.png', caption: "Forever & Always" }
     ];
 
-    // Ring 1: Y rotation 0, 90, 180, 270. X rotation -20deg (looking up)
-    // Ring 2: Y rotation 45, 135, 225, 315. X rotation 20deg (looking down)
+    // We need to place them so they don't overlap too badly, or just purely random. User asked for "scatter randomly".
+    // Let's use constrained random to ensure they are somewhat spread out.
+    // Or just pure random with limits.
 
-    images.forEach((src, i) => {
-        const face = document.createElement('div');
-        face.className = 'sphere-face';
-        face.style.backgroundImage = `url('${src}')`;
+    photos.forEach((photo, i) => {
+        const item = document.createElement('div');
+        item.className = 'scatter-photo';
 
-        let rotY = 0;
-        let rotX = 0;
+        // Random Position (keep inside 80% width/height to avoid cutoff)
+        const left = Math.random() * 70 + 10; // 10% to 80%
+        const top = Math.random() * 70 + 10; // 10% to 80%
 
-        if (i < 4) {
-            // Top Ring
-            rotY = i * 90;
-            rotX = -15;
-        } else {
-            // Bottom Ring (offset Y by 45deg)
-            rotY = (i - 4) * 90 + 45;
-            rotX = 15;
-        }
+        // Random Animation Delay so they don't beat in sync
+        const delay = Math.random() * 2; // 0-2s delay
 
-        // Transform: Rotate Y, then Rotate X, then Translate Z
-        // Note: order matters.
-        face.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(250px)`;
-        wrapper.appendChild(face);
+        item.style.left = left + '%';
+        item.style.top = top + '%';
+        item.style.animationDelay = delay + 's';
+
+        item.innerHTML = `<img src="${photo.src}" alt="Memory">`;
+
+        item.onclick = () => showPhotoModal(photo.src, photo.caption);
+
+        container.appendChild(item);
     });
 }
 
-const handleStart = (x, y) => { isDragging = true; startX = x; startY = y; if (sphere) sphere.style.animation = 'none'; };
-const handleMove = (x, y) => {
-    if (!isDragging) return;
-    const deltaX = x - startX;
-    const deltaY = y - startY;
-    curRotY = initRotY + deltaX * 0.5;
-    curRotX = initRotX - deltaY * 0.5;
-    if (sphere) sphere.style.transform = `rotateX(${curRotX}deg) rotateY(${curRotY}deg)`;
-};
-const handleEnd = () => { if (isDragging) { isDragging = false; initRotY = curRotY; initRotX = curRotX; } };
-
-if (scene) {
-    scene.addEventListener('mousedown', e => handleStart(e.clientX, e.clientY));
-    document.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
-    document.addEventListener('mouseup', handleEnd);
-    scene.addEventListener('touchstart', e => handleStart(e.touches[0].clientX, e.touches[0].clientY), { passive: false });
-    document.addEventListener('touchmove', e => { if (isDragging) { e.preventDefault(); handleMove(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
-    document.addEventListener('touchend', handleEnd);
-}
 
 /* --- Timer --- */
-const startDate = new Date(2023, 1, 14);
+const startDate = new Date(2025, 6, 27);
 function updateTimer() {
     const now = new Date();
     const diff = now - startDate;
@@ -131,10 +144,10 @@ function updateTimer() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
     if (document.getElementById('days')) {
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
+        document.getElementById('days').textContent = Math.abs(days);
+        document.getElementById('hours').textContent = Math.abs(hours);
+        document.getElementById('minutes').textContent = Math.abs(minutes);
+        document.getElementById('seconds').textContent = Math.abs(seconds);
     }
 }
 setInterval(updateTimer, 1000);
@@ -205,7 +218,14 @@ function setupKeyGame() {
 const affirmations = [
     "You are worthy.", "You are capable.", "You are loved.", "You are strong.", "You are enough.",
     "You are beautiful.", "You are brave.", "You are radiant.", "You are kind.", "You are amazing.",
-    "You are smart.", "You are funny.", "You are important.", "You are special."
+    "You are smart.", "You are funny.", "You are important.", "You are special.",
+    "You are resilient.", "You are confident.", "You are creative.", "You are powerful.",
+    "You are patient.", "You are gentle.", "You are honest.", "You are thoughtful.",
+    "You are inspiring.", "You are valued.", "You are growing.", "You are improving.",
+    "You are learning.", "You are evolving.", "You are becoming your best self.",
+    "You are allowed to grow.", "You are allowed to rest.", "You are allowed to change.",
+    "You are calm.", "You are grounded.", "You are safe.", "You are supported.",
+    "You are not alone.", "You are understood.", "You are accepted.", "You are deserving of love."
 ];
 let affIndex = 0;
 window.nextAffirmation = function () {
