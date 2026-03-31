@@ -309,7 +309,7 @@ function createScatteredGallery() {
 
 
 /* --- Timer --- */
-const startDate = new Date(2025, 6, 27);
+const startDate = new Date(2025, 5, 27);
 function updateTimer() {
     const now = new Date();
     const diff = now - startDate;
